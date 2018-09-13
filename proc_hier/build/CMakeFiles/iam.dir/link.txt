@@ -1,0 +1,1 @@
+/usr/bin/cc  -D_FILE_OFFSET_BITS=64  -rdynamic CMakeFiles/iam.dir/iam.c.o  -o bin/iam 

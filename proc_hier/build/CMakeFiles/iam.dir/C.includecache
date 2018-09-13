@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/proc_hier/iam.c
+stdio.h
+-
+unistd.h
+-
+
