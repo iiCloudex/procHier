@@ -7,48 +7,30 @@
 #include    <unistd.h>
 
 #define oops(m) {perror(m); exit(EXIT_FAILURE);}
-#define maxChild 2
-#define maxLevels 3
-
-
-void goFork()
-{
-
-
-}
-
-
 
 int main()
 {
-	pid_t pid;
-	
-	int levels = 1;
-	int childCount = 0;
+    pid_t pid;
 
-    	// fork a child process
-	pid = fork();
+    // fork a child process
+    pid = fork();
 
-    	if (pid < 0) // error occurred
-    	{
-    		oops("Fork Failed!");
-    	}
-    	else if(pid == 0) // child
-    	{
-        	printf("I am the child %d\n", getpid());
-    		// fork a child process
-    		pid = fork();
-	}
-    	else
-    	{
-    		// pid > 0 ==> must be parent
-    		printf("I am the parent %d\n", getpid());
-    		/* parent will wait for the child to complete */		
-		
-		if (wait(NULL) < 0)
-			printf("-1 from wait(NULL) with errno = %d\n", errno);
+    if (pid < 0) // error occurred
+    oops("Fork Failed!");
 
-    		printf("Child Complete\n");
-    		exit(EXIT_SUCCESS);
-    	}
+    if (pid == 0) // child
+    {
+        printf("I am the child %d\n", getpid());
+        if (execlp("./iam", "iam", "Hello Parent! Please do not kill me!", NULL) < 0)
+        oops("Execlp Failed!");
+    }
+
+    // pid > 0 ==> must be parent
+    printf("I am the parent %d\n", getpid());
+    /* parent will wait for the child to complete */
+    if (wait(NULL) < 0)
+        printf("-1 from wait(NULL) with errno = %d\n", errno);
+
+    printf("Child Complete\n");
+    exit(EXIT_SUCCESS);
 }

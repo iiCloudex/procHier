@@ -1,4 +1,0 @@
-/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/proc_hier/build/CMakeFiles/edit_cache.dir
-/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/proc_hier/build/CMakeFiles/rebuild_cache.dir
-/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/proc_hier/build/CMakeFiles/proc_hier.dir
-/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/proc_hier/build/CMakeFiles/iam.dir
