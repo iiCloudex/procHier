@@ -1,0 +1,1 @@
+/usr/bin/cc  -D_FILE_OFFSET_BITS=64   CMakeFiles/avg_client.dir/avg_POSIX_client.c.o  -o bin/avg_client -lrt 

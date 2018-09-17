@@ -13,17 +13,18 @@ int main(int argc, char *argv[])
 	}
 
 	if ((server_msqid = mq_open(SERVER_NAME, O_WRONLY)) < 0)
-		oops("CLI: Error opening a queue.", errno);
+		oops("CLI: Error opening the server queue.", errno);
 
-	sprintf(msg_send.sender_name, "/%s", argv[1]); // need '/' as a prefix
-	msg_send.val = strtol(argv[2], NULL, 10);
+	msg_send.stable = false;
+	msg_send.nodeId = atoi(argv[1])
+	msg_send.temperature = strtol(argv[2], NULL, 10);
 
 	if (mq_send(server_msqid, (char *) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
-		oops("CLI: Error sending a message.", errno);
+		oops("CLI: Error sending a message to server.", errno);
 
 	// just in case the old queue is still there (e.g., after ^C)
-	if (mq_unlink(msg_send.sender_name) == 0)
-		printf("CLI: Message queue %s removed from system.\n", msg_send.sender_name);
+	if (mq_unlink(msg_send.nodeId) == 0)
+		printf("CLI: Message queue %s removed from system.\n", msg_send.nodeId);
 
 	// initialize the queue attributes
 	struct mq_attr attr;
@@ -33,15 +34,36 @@ int main(int argc, char *argv[])
 	attr.mq_curmsgs = 0;
 	attr.mq_flags = 0;
 
-	if ((my_msqid = mq_open(msg_send.sender_name, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
+	if ((my_msqid = mq_open(msg_send.nodeId, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
 		oops("CLI: Error opening a client queue.", errno);
 
-	if (mq_receive(my_msqid, (char *) &msg_rcvd, MAX_MSG_SIZE, &type) < 0)
-		oops("CLI: Error receiving data.", errno);
+	while(true)
+	{
+		if (mq_receive(my_msqid, (char *) &msg_rcvd, MAX_MSG_SIZE, &type) >= 0)
+		{
+			if(msg_rcvd.stable)
+			{
+				printf("NODE %d TERMINATING...", msg_send.nodeId);
+				exit(EXIT_SUCCESS);
+			}
+			else
+			{
+				float new_node_temp = (msg_send.temperature * 3 + 2 * msg_rcvd.temperature) / 5;
 
-	printf("CLI: SERVER REPORTS CURRENT AVERAGE NUMBER: %.2f\n", msg_rcvd.val);
+				msg_send.temperature = new_node_temp;
 
-	mq_unlink(msg_send.sender_name);
+			}
+
+		}
+		else
+			oops("CLI: Error receiving data.", errno);
+
+		
+
+
+		printf("CLI: SERVER REPORTS CURRENT AVERAGE NUMBER: %.2f\n", msg_rcvd.temperature);
+	}
+	mq_unlink(msg_send.nodeId);
 
 	exit(EXIT_SUCCESS);
 }

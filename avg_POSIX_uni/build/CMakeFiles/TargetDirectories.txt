@@ -1,0 +1,4 @@
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles/rebuild_cache.dir
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles/edit_cache.dir
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles/avg_server.dir
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles/avg_client.dir

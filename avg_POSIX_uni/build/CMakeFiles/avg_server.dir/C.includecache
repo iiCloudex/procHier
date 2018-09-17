@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_messg.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+errno.h
+-
+mqueue.h
+-
+stdbool.h
+-
+
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_server.c
+avg_POSIX_messg.h
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_messg.h
+

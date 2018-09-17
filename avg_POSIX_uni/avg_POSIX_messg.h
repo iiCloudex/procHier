@@ -14,9 +14,16 @@
 #define TYPE 1
 
 typedef struct messg {
-    char sender_name[16];
-    float val;
+    bool stable;
+    int nodeId;
+    float temperature;
 } MESSG;
+
+typedef struct temperature {
+	mqd_t msqid;
+	float previousTemperature;
+} TEMPERATURE;
+
 
 #define oops(ermsg,erno) {perror(ermsg); exit(erno); }
 
