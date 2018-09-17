@@ -23,8 +23,9 @@ int main(int argc, char *argv[])
 		oops("CLI: Error sending a message to server.", errno);
 
 	// just in case the old queue is still there (e.g., after ^C)
-	if (mq_unlink(sprintf(my_msqid, "/NODE_%d", msg_send.nodeId)) == 0 )
-		printf("CLI: Message queue %s removed from system.\n", sprintf(NODE_NAME_PREFIX, "%s", msg_send.nodeId) );
+	sprintf(my_msqid, "/%s_%d", NODE_NAME_PREFIX, msg_send.nodeId);
+	if (mq_unlink(my_msqid) == 0 )
+		printf("CLI: Message queue %s removed from system.\n", my_msqid);
 
 	// initialize the queue attributes
 	struct mq_attr attr;
@@ -51,7 +52,7 @@ int main(int argc, char *argv[])
 		{
 			if(msg_rcvd.stable)
 			{
-				printf("NODE_%d TERMINATING...", msg_send.nodeId);
+				printf("%s TERMINATING...", my_msqid);
 				exit(EXIT_SUCCESS);
 			}
 			else
@@ -62,6 +63,9 @@ int main(int argc, char *argv[])
 				msg_send.temperature = new_node_temp;
 
 			}
+			
+			if (mq_send(server_msqid, (char *) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
+				oops("CLI: Error sending a message to server.", errno);
 
 		}
 		else

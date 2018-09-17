@@ -22,7 +22,7 @@ stdbool.h
 unistd.h
 -
 
-/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_server.c
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/monitor.c
 avg_POSIX_messg.h
 /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_messg.h
 

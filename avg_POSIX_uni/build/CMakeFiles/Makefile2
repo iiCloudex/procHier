@@ -60,76 +60,76 @@ CMAKE_SOURCE_DIR = /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteL
 CMAKE_BINARY_DIR = /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/avg_server.dir
+# Target rules for target CMakeFiles/monitor.dir
 
 # All Build rule for target.
-CMakeFiles/avg_server.dir/all:
-	$(MAKE) -f CMakeFiles/avg_server.dir/build.make CMakeFiles/avg_server.dir/depend
-	$(MAKE) -f CMakeFiles/avg_server.dir/build.make CMakeFiles/avg_server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles --progress-num=3,4 "Built target avg_server"
-.PHONY : CMakeFiles/avg_server.dir/all
+CMakeFiles/monitor.dir/all:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/depend
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles --progress-num=1,2 "Built target monitor"
+.PHONY : CMakeFiles/monitor.dir/all
 
 # Include target in all.
-all: CMakeFiles/avg_server.dir/all
+all: CMakeFiles/monitor.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/avg_server.dir/rule: cmake_check_build_system
+CMakeFiles/monitor.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/avg_server.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/monitor.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles 0
-.PHONY : CMakeFiles/avg_server.dir/rule
+.PHONY : CMakeFiles/monitor.dir/rule
 
 # Convenience name for target.
-avg_server: CMakeFiles/avg_server.dir/rule
+monitor: CMakeFiles/monitor.dir/rule
 
-.PHONY : avg_server
-
-# clean rule for target.
-CMakeFiles/avg_server.dir/clean:
-	$(MAKE) -f CMakeFiles/avg_server.dir/build.make CMakeFiles/avg_server.dir/clean
-.PHONY : CMakeFiles/avg_server.dir/clean
+.PHONY : monitor
 
 # clean rule for target.
-clean: CMakeFiles/avg_server.dir/clean
+CMakeFiles/monitor.dir/clean:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/clean
+.PHONY : CMakeFiles/monitor.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/monitor.dir/clean
 
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/avg_client.dir
+# Target rules for target CMakeFiles/node.dir
 
 # All Build rule for target.
-CMakeFiles/avg_client.dir/all:
-	$(MAKE) -f CMakeFiles/avg_client.dir/build.make CMakeFiles/avg_client.dir/depend
-	$(MAKE) -f CMakeFiles/avg_client.dir/build.make CMakeFiles/avg_client.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles --progress-num=1,2 "Built target avg_client"
-.PHONY : CMakeFiles/avg_client.dir/all
+CMakeFiles/node.dir/all:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/depend
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles --progress-num=3,4 "Built target node"
+.PHONY : CMakeFiles/node.dir/all
 
 # Include target in all.
-all: CMakeFiles/avg_client.dir/all
+all: CMakeFiles/node.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/avg_client.dir/rule: cmake_check_build_system
+CMakeFiles/node.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/avg_client.dir/all
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/CMakeFiles 0
-.PHONY : CMakeFiles/avg_client.dir/rule
+.PHONY : CMakeFiles/node.dir/rule
 
 # Convenience name for target.
-avg_client: CMakeFiles/avg_client.dir/rule
+node: CMakeFiles/node.dir/rule
 
-.PHONY : avg_client
-
-# clean rule for target.
-CMakeFiles/avg_client.dir/clean:
-	$(MAKE) -f CMakeFiles/avg_client.dir/build.make CMakeFiles/avg_client.dir/clean
-.PHONY : CMakeFiles/avg_client.dir/clean
+.PHONY : node
 
 # clean rule for target.
-clean: CMakeFiles/avg_client.dir/clean
+CMakeFiles/node.dir/clean:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/clean
+.PHONY : CMakeFiles/node.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/node.dir/clean
 
 .PHONY : clean
 

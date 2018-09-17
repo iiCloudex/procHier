@@ -10,7 +10,7 @@
 #include <unistd.h>
 
 #define MONITOR_QUEUE "/MONITOR" // message queue name must start with '/'
-#define NODE_NAME_PREFIX "/NODE_"
+#define NODE_NAME_PREFIX "NODE_"
 
 #define MAX_MSG_SIZE 1024
 #define TYPE 1

@@ -1,0 +1,1 @@
+/usr/bin/cc  -D_FILE_OFFSET_BITS=64   CMakeFiles/node.dir/node.c.o  -o bin/node -lrt 

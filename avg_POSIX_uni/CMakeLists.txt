@@ -10,9 +10,9 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-add_executable(avg_server avg_POSIX_server.c)
-target_link_libraries(avg_server rt)
+add_executable(monitor monitor.c)
+target_link_libraries(monitor rt)
 
-add_executable(avg_client avg_POSIX_client.c)
-target_link_libraries(avg_client rt)
+add_executable(node node.c)
+target_link_libraries(node rt)
 

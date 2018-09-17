@@ -1,12 +1,12 @@
 [
 {
   "directory": "/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build",
-  "command": "/usr/bin/cc    -D_FILE_OFFSET_BITS=64   -std=gnu11 -o CMakeFiles/avg_server.dir/avg_POSIX_server.c.o   -c /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_server.c",
-  "file": "/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_server.c"
+  "command": "/usr/bin/cc    -D_FILE_OFFSET_BITS=64   -std=gnu11 -o CMakeFiles/monitor.dir/monitor.c.o   -c /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/monitor.c",
+  "file": "/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/monitor.c"
 },
 {
   "directory": "/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build",
-  "command": "/usr/bin/cc    -D_FILE_OFFSET_BITS=64   -std=gnu11 -o CMakeFiles/avg_client.dir/avg_POSIX_client.c.o   -c /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_client.c",
-  "file": "/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_client.c"
+  "command": "/usr/bin/cc    -D_FILE_OFFSET_BITS=64   -std=gnu11 -o CMakeFiles/node.dir/node.c.o   -c /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/node.c",
+  "file": "/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/node.c"
 }
 ]

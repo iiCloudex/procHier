@@ -39,93 +39,29 @@ int main(int argc, char *argv[])
 		nodeData[i].previousTemperature = 0;
 	}
 
-	pid = fork();
+	//Start forking client nodes
+	for(int i = 0; i < numOfNodes; i++)
+	{
+		nodeData[i].previousTemperature = 0; //initialize each spot in array as 0
 
-	if(pid < 0)
-	{
-		oops("SVR: Fork Failed!", errno);
-	}
-	else if(pid == 0)
-	{
-		printf("I am the first child\n");
-		if ( execlp("./avg_client","avg_client", 1, argv[3], NULL) < 0)
-			oops("execlp failed!", errno);
-	}
-	else
-	{
-		pid = fork();
-
-		if(pid < 0)
+		//Fork 4 children
+		if(i < numOfNodes)
 		{
-			oops("SVR: Fork Failed!", errno);
-		}
-		else if(pid == 0)
-		{
-			printf("I am the second child\n");
-			if ( execlp("./avg_client","avg_client", 2, argv[4], NULL) < 0)
-				oops("execlp failed!", errno);
-		}
-		else
-		{	
 			pid = fork();
 
 			if(pid < 0)
 			{
 				oops("SVR: Fork Failed!", errno);
 			}
-			else if(pid == 0)
+			else if(pid == 0) //If child, run client node
 			{
-				printf("I am the third child\n");
-				if ( execlp("./avg_client","avg_client", 3, argv[5], NULL) < 0)
-					oops("execlp failed!", errno);
+				printf("I am the child\n");
+				execlp("node", "node", i+1, argv[i+3], (char *) NULL);
+				printf("SVR: Child got passed execlp!\n");
 			}
-			else
-			{	
-				pid = fork();
-
-				if(pid < 0)
-				{
-					oops("SVR: Fork Failed!", errno);
-				}
-				else if(pid == 0)
-				{
-					printf("I am the fourth child\n");
-					if ( execlp("./avg_client","avg_client", 4, argv[6], NULL) < 0)
-						oops("execlp failed!", errno);
-				}
-				else
-				{	
-					
-				}
-			}	
-		}
+			else{} //DO NOTHING
+		} 
 	}
-
-
-
-	// //Start forking client nodes
-	// for(int i = 0; i < numOfNodes; i++)
-	// {
-	// 	nodeData[i].previousTemperature = 0; //initialize each spot in array as 0
-
-	// 	//Fork 4 children
-	// 	if(i < numOfNodes)
-	// 	{
-	// 		pid = fork();
-
-	// 		if(pid < 0)
-	// 		{
-	// 			oops("SVR: Fork Failed!", errno);
-	// 		}
-	// 		else if(pid == 0) //If child, run client node
-	// 		{
-	// 			printf("I am the child\n");
-	// 			execlp("./avg_client", "avg_client", i+1, argv[i+3], 0);
-	// 			printf("SVR: Child got passed execlp!\n");
-	// 		}
-	// 		else{} //DO NOTHING
-	// 	} 
-	// }
 
 	
 	float monitorTemp = strtol(argv[1], NULL, 10);
@@ -173,7 +109,8 @@ int main(int argc, char *argv[])
 				msg_send.temperature = new_integrated_temp;
 			}
 
-			if (mq_open( sprintf(your_msqid, "/NODE_%d", msg_rcvd.nodeId) , O_WRONLY) < 0)
+			sprintf(your_msqid, "/%s_%d", NODE_NAME_PREFIX, msg_rcvd.nodeId);
+			if (mq_open( your_msqid, O_WRONLY) < 0)
 				oops("SRV: Error opening a client's queue.", errno);
 
 			if (mq_send(your_msqid, (const char*) &msg_send, sizeof(msg_send), (unsigned int) TYPE) < 0)

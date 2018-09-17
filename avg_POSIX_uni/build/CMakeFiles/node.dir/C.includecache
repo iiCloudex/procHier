@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_client.c
-avg_POSIX_messg.h
-/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_messg.h
-
 /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_messg.h
 stdio.h
 -
@@ -25,4 +21,8 @@ stdbool.h
 -
 unistd.h
 -
+
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/node.c
+avg_POSIX_messg.h
+/home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_messg.h
 

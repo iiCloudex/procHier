@@ -1,1 +1,0 @@
-/usr/bin/cc  -D_FILE_OFFSET_BITS=64   CMakeFiles/avg_server.dir/avg_POSIX_server.c.o  -o bin/avg_server -lrt 

@@ -111,84 +111,84 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named avg_server
+# Target rules for targets named monitor
 
 # Build rule for target.
-avg_server: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 avg_server
-.PHONY : avg_server
+monitor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 monitor
+.PHONY : monitor
 
 # fast build rule for target.
-avg_server/fast:
-	$(MAKE) -f CMakeFiles/avg_server.dir/build.make CMakeFiles/avg_server.dir/build
-.PHONY : avg_server/fast
+monitor/fast:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/build
+.PHONY : monitor/fast
 
 #=============================================================================
-# Target rules for targets named avg_client
+# Target rules for targets named node
 
 # Build rule for target.
-avg_client: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 avg_client
-.PHONY : avg_client
+node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 node
+.PHONY : node
 
 # fast build rule for target.
-avg_client/fast:
-	$(MAKE) -f CMakeFiles/avg_client.dir/build.make CMakeFiles/avg_client.dir/build
-.PHONY : avg_client/fast
+node/fast:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/build
+.PHONY : node/fast
 
-avg_POSIX_client.o: avg_POSIX_client.c.o
+monitor.o: monitor.c.o
 
-.PHONY : avg_POSIX_client.o
-
-# target to build an object file
-avg_POSIX_client.c.o:
-	$(MAKE) -f CMakeFiles/avg_client.dir/build.make CMakeFiles/avg_client.dir/avg_POSIX_client.c.o
-.PHONY : avg_POSIX_client.c.o
-
-avg_POSIX_client.i: avg_POSIX_client.c.i
-
-.PHONY : avg_POSIX_client.i
-
-# target to preprocess a source file
-avg_POSIX_client.c.i:
-	$(MAKE) -f CMakeFiles/avg_client.dir/build.make CMakeFiles/avg_client.dir/avg_POSIX_client.c.i
-.PHONY : avg_POSIX_client.c.i
-
-avg_POSIX_client.s: avg_POSIX_client.c.s
-
-.PHONY : avg_POSIX_client.s
-
-# target to generate assembly for a file
-avg_POSIX_client.c.s:
-	$(MAKE) -f CMakeFiles/avg_client.dir/build.make CMakeFiles/avg_client.dir/avg_POSIX_client.c.s
-.PHONY : avg_POSIX_client.c.s
-
-avg_POSIX_server.o: avg_POSIX_server.c.o
-
-.PHONY : avg_POSIX_server.o
+.PHONY : monitor.o
 
 # target to build an object file
-avg_POSIX_server.c.o:
-	$(MAKE) -f CMakeFiles/avg_server.dir/build.make CMakeFiles/avg_server.dir/avg_POSIX_server.c.o
-.PHONY : avg_POSIX_server.c.o
+monitor.c.o:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/monitor.c.o
+.PHONY : monitor.c.o
 
-avg_POSIX_server.i: avg_POSIX_server.c.i
+monitor.i: monitor.c.i
 
-.PHONY : avg_POSIX_server.i
+.PHONY : monitor.i
 
 # target to preprocess a source file
-avg_POSIX_server.c.i:
-	$(MAKE) -f CMakeFiles/avg_server.dir/build.make CMakeFiles/avg_server.dir/avg_POSIX_server.c.i
-.PHONY : avg_POSIX_server.c.i
+monitor.c.i:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/monitor.c.i
+.PHONY : monitor.c.i
 
-avg_POSIX_server.s: avg_POSIX_server.c.s
+monitor.s: monitor.c.s
 
-.PHONY : avg_POSIX_server.s
+.PHONY : monitor.s
 
 # target to generate assembly for a file
-avg_POSIX_server.c.s:
-	$(MAKE) -f CMakeFiles/avg_server.dir/build.make CMakeFiles/avg_server.dir/avg_POSIX_server.c.s
-.PHONY : avg_POSIX_server.c.s
+monitor.c.s:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/monitor.c.s
+.PHONY : monitor.c.s
+
+node.o: node.c.o
+
+.PHONY : node.o
+
+# target to build an object file
+node.c.o:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/node.c.o
+.PHONY : node.c.o
+
+node.i: node.c.i
+
+.PHONY : node.i
+
+# target to preprocess a source file
+node.c.i:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/node.c.i
+.PHONY : node.c.i
+
+node.s: node.c.s
+
+.PHONY : node.s
+
+# target to generate assembly for a file
+node.c.s:
+	$(MAKE) -f CMakeFiles/node.dir/build.make CMakeFiles/node.dir/node.c.s
+.PHONY : node.c.s
 
 # Help Target
 help:
@@ -198,14 +198,14 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... avg_server"
-	@echo "... avg_client"
-	@echo "... avg_POSIX_client.o"
-	@echo "... avg_POSIX_client.i"
-	@echo "... avg_POSIX_client.s"
-	@echo "... avg_POSIX_server.o"
-	@echo "... avg_POSIX_server.i"
-	@echo "... avg_POSIX_server.s"
+	@echo "... monitor"
+	@echo "... node"
+	@echo "... monitor.o"
+	@echo "... monitor.i"
+	@echo "... monitor.s"
+	@echo "... node.o"
+	@echo "... node.i"
+	@echo "... node.s"
 .PHONY : help
 
 

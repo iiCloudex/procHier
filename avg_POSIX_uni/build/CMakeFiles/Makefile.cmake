@@ -92,6 +92,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/avg_server.dir/DependInfo.cmake"
-  "CMakeFiles/avg_client.dir/DependInfo.cmake"
+  "CMakeFiles/monitor.dir/DependInfo.cmake"
+  "CMakeFiles/node.dir/DependInfo.cmake"
   )
