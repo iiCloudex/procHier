@@ -19,6 +19,8 @@ mqueue.h
 -
 stdbool.h
 -
+unistd.h
+-
 
 /home/marcoantoniobustamante/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/avg_POSIX_server.c
 avg_POSIX_messg.h

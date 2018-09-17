@@ -2,7 +2,6 @@
 
 int main(int argc, char *argv[])
 {
-	printf("HELLO\n");
 	mqd_t my_msqid, server_msqid;
 	MESSG msg_rcvd, msg_send;
 	unsigned int type;
@@ -14,7 +13,7 @@ int main(int argc, char *argv[])
 	}
 
 	if ((server_msqid = mq_open(MONITOR_QUEUE, O_WRONLY)) < 0)
-		oops("CLI: Error opening the server queue.", errno);
+		oops("CLI: Error opening the monitor queue.", errno);
 
 	msg_send.stable = false;
 	msg_send.nodeId = atoi(argv[1]);
@@ -24,8 +23,8 @@ int main(int argc, char *argv[])
 		oops("CLI: Error sending a message to server.", errno);
 
 	// just in case the old queue is still there (e.g., after ^C)
-	if (mq_unlink(strcat("/NODE_", msg_send.nodeId) == 0) )
-		printf("CLI: Message queue %s removed from system.\n", strcat(NODE_NAME_PREFIX, msg_send.nodeId) );
+	if (mq_unlink(sprintf(my_msqid, "/NODE_%d", msg_send.nodeId)) == 0 )
+		printf("CLI: Message queue %s removed from system.\n", sprintf(NODE_NAME_PREFIX, "%s", msg_send.nodeId) );
 
 	// initialize the queue attributes
 	struct mq_attr attr;
@@ -35,7 +34,9 @@ int main(int argc, char *argv[])
 	attr.mq_curmsgs = 0;
 	attr.mq_flags = 0;
 
-	if ((my_msqid = mq_open(strcat("/NODE_", msg_send.nodeId), O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
+
+
+	if ( mq_open(my_msqid, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr) < 0)
 	{
 		oops("CLI: Error opening a client queue.", errno);
 	}
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
 		{
 			if(msg_rcvd.stable)
 			{
-				printf("NODE %d TERMINATING...", msg_send.nodeId);
+				printf("NODE_%d TERMINATING...", msg_send.nodeId);
 				exit(EXIT_SUCCESS);
 			}
 			else
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
 
 		
 	}
-	mq_unlink(strcat("/NODE_", msg_send.nodeId));
+	mq_unlink(my_msqid);
 
 	exit(EXIT_SUCCESS);
 }
