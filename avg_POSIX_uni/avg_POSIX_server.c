@@ -1,5 +1,7 @@
 #include "avg_POSIX_messg.h"
 
+// Description: Function adds each previousTemperature
+// value in the array and returns the sum.
 float arraySum(TEMPERATURE *nodeData)
 {
 	float sum = 0;
@@ -26,15 +28,18 @@ int main(int argc, char *argv[])
 	}
 
 	// just in case it is still there (if we quit using ^C for example)
-	if (mq_unlink(SERVER_NAME) == 0)
-		printf("SRV: Message queue %s removed.\n", SERVER_NAME);
+	if (mq_unlink(MONITOR_QUEUE) == 0)
+		printf("SRV: Message queue %s removed.\n", MONITOR_QUEUE);
 
-	int numOfNodes = strtol(argv[2], NULL, 0);
+	int numOfNodes = atoi(argv[2]); //Make 4 a number
 	TEMPERATURE nodeData[numOfNodes];
 
+	//Start forking client nodes
 	for(int i = 0; i < numOfNodes; i++)
 	{
-		nodeData[i].previousTemperature = 0;
+		nodeData[i].previousTemperature = 0; //initialize each spot in array as 0
+
+		//Fork 4 children
 		if(i < numOfNodes)
 		{
 			pid = fork();
@@ -43,9 +48,9 @@ int main(int argc, char *argv[])
 			{
 				oops("SVR: Fork Failed!", errno);
 			}
-			else if(pid == 0)
+			else if(pid == 0) //If child, run client node
 			{
-				execlp("./avg_server", "avg_server", i+1, argv[i+3], NULL);
+				execlp("./avg_client", "avg_client", i+1, argv[i+3], NULL);
 				printf("SVR: Child got passed exec!\n");
 			}
 			else{} //DO NOTHING
@@ -65,25 +70,29 @@ int main(int argc, char *argv[])
 	attr.mq_curmsgs = 0;
 	attr.mq_flags = 0;
 
-	if ((my_msqid = mq_open(SERVER_NAME, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
-		oops("SRV: Error opening a server queue.", errno);
+	if ((my_msqid = mq_open(MONITOR_QUEUE, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
+		oops("SRV: Error opening a monitor queue.", errno);
 
-	printf("SRV: Message queue %s created.\n", SERVER_NAME);
+	printf("SRV: Message queue %s created.\n", MONITOR_QUEUE);
 
 	while (true)
 	{
+		//If we recieved a message successfully
 		if (mq_receive(my_msqid, (char*) &msg_rcvd, MAX_MSG_SIZE, &type) >= 0)
 		{
+			//Go to spot in nodeData array
 			TEMPERATURE currNodeSpot = nodeData[msg_rcvd.nodeId - 1];
+
+			//Need to check if all spots in nodeData are all stable if they are then terminate.
 
 			if(currNodeSpot.previousTemperature == msg_rcvd.temperature)
 			{
 				msg_send.stable = true;
 
 			}
-			else
+			else //Do calculation and prepare a message
 			{
-				printf("SRV: NODE %d REPORTS: %.2f\n", msg_rcvd.nodeId, msg_rcvd.temperature); // skip '/'
+				printf("SRV: NODE %d REPORTS: %.2f\n", msg_rcvd.nodeId, msg_rcvd.temperature);
 
 				sumOfClients = arraySum(nodeData);
 				new_integrated_temp = (2 * currNodeSpot.previousTemperature + sumOfClients) / 6;
@@ -91,11 +100,10 @@ int main(int argc, char *argv[])
 
 				printf("SRV: CURRENT AVERAGE NUMBER: %.2f\n", new_integrated_temp);
 
-				strcpy(msg_send.nodeId, SERVER_NAME);
 				msg_send.temperature = new_integrated_temp;
 			}
 
-			if ((your_msqid = mq_open((const char*) &msg_rcvd.nodeId, O_WRONLY)) < 0)
+			if ((your_msqid = mq_open( strcat("/NODE_", msg_rcvd.nodeId) , O_WRONLY)) < 0)
 				oops("SRV: Error opening a client's queue.", errno);
 
 			if (mq_send(your_msqid, (const char*) &msg_send, sizeof(msg_send), (unsigned int) TYPE) < 0)
@@ -105,7 +113,7 @@ int main(int argc, char *argv[])
 			oops("SRV: Error receiving data.", errno);
 	}
 
-	mq_unlink(SERVER_NAME);
+	mq_unlink(MONITOR_QUEUE);
 
 	exit(EXIT_SUCCESS);
 }
