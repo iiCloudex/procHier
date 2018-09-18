@@ -1,25 +1,12 @@
 #include "avg_POSIX_messg.h"
 
-// Description: Function adds each previousTemperature
-// value in the array and returns the sum.
-float arraySum(TEMPERATURE *nodeData)
-{
-	float sum = 0;
-
-	for(int i = 0; i < sizeof(nodeData); i++)
-	{
-		sum += nodeData[i].previousTemperature;
-	}
-
-	return sum;
-}
-
 int main(int argc, char *argv[])
 {
 	pid_t pid;
 	mqd_t my_msqid, your_msqid;
 	MESSG msg_rcvd, msg_send;
 	unsigned int type;
+	int numOfNodes;
 
 	if (argc < 7)
 	{
@@ -27,43 +14,12 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
+	numOfNodes = atoi(argv[2]); //Make 4 a number
+
 	// just in case it is still there (if we quit using ^C for example)
 	if (mq_unlink(MONITOR_QUEUE) == 0)
 		printf("SRV: Message queue %s removed.\n", MONITOR_QUEUE);
 
-	int numOfNodes = atoi(argv[2]); //Make 4 a number
-	TEMPERATURE nodeData[numOfNodes];
-
-	for(int i = 0; i < numOfNodes; i++)
-	{
-		nodeData[i].previousTemperature = 0;
-	}
-
-	//Start forking client nodes
-	for(int i = 0; i < numOfNodes; i++)
-	{
-		nodeData[i].previousTemperature = 0; //initialize each spot in array as 0
-
-		//Fork 4 children
-		if(i < numOfNodes)
-		{
-			pid = fork();
-
-			if(pid < 0)
-			{
-				oops("SVR: Fork Failed!", errno);
-			}
-			else if(pid == 0) //If child, run client node
-			{
-				printf("I am the child\n");
-				execlp("node", "node", i+1, argv[i+3], (char *) NULL);
-				printf("SVR: Child got passed execlp!\n");
-			}
-			else{} //DO NOTHING
-		} 
-	}
-
-	
 	float monitorTemp = strtol(argv[1], NULL, 10);
 	float sumOfClients = 0;
 	float new_integrated_temp = 0;
@@ -81,37 +37,65 @@ int main(int argc, char *argv[])
 
 	printf("SRV: Message queue %s created.\n", MONITOR_QUEUE);
 
-	while (true)
+	//Start forking client nodes
+	for(int i = 0; i < numOfNodes; i++)
+	{
+		pid = fork();
+
+		if(pid < 0)
+		{
+			oops("SVR: Fork Failed!", errno);
+		}
+		else if(pid == 0) //If child, run client node
+		{
+			char buffer[5];
+			sprintf(buffer, "%d", i+1);
+			execlp("node", "node", buffer, argv[i+3], (char *) NULL);
+		}
+		else{} //DO NOTHING
+	} 
+	
+
+	TEMPERATURE nodeData[numOfNodes];
+
+	for(int i = 0; i < numOfNodes; i++)
+	{
+		nodeData[i].previousTemperature = 0;
+	}
+
+
+	int isStable = 0;
+
+	while (isStable != 4)
 	{
 		//If we recieved a message successfully
 		if (mq_receive(my_msqid, (char*) &msg_rcvd, MAX_MSG_SIZE, &type) >= 0)
 		{
-			//Go to spot in nodeData array
-			TEMPERATURE currNodeSpot = nodeData[msg_rcvd.nodeId - 1];
-
-			//Need to check if all spots in nodeData are all stable if they are then terminate.
-
-			if(currNodeSpot.previousTemperature == msg_rcvd.temperature)
+			if(nodeData[msg_rcvd.nodeId - 1].previousTemperature == msg_rcvd.temperature)//Old temp == received temp
 			{
+
 				msg_send.stable = true;
-
+				isStable++;
 			}
-			else //Do calculation and prepare a message
+			else
 			{
-				printf("SRV: NODE %d REPORTS: %.2f\n", msg_rcvd.nodeId, msg_rcvd.temperature);
+				char name[10];
+				sprintf(name, "/%s%d", NODE_NAME_PREFIX, msg_rcvd.nodeId);
 
-				sumOfClients = arraySum(nodeData);
-				new_integrated_temp = (2 * currNodeSpot.previousTemperature + sumOfClients) / 6;
-				currNodeSpot.previousTemperature = msg_rcvd.temperature;
+				if ( (your_msqid = mq_open(name, O_WRONLY)) < 0)
+					oops("SRV: Error opening a client's queue.", errno);
+			
+				printf("SRV: NODE_%d REPORTS: %.2f\n", msg_rcvd.nodeId, msg_rcvd.temperature);
+
+				sumOfClients = sumOfClients - nodeData[msg_rcvd.nodeId - 1].previousTemperature + msg_rcvd.temperature;
+				monitorTemp = (2 * monitorTemp + sumOfClients) / 6;
+				nodeData[msg_rcvd.nodeId - 1].previousTemperature = msg_rcvd.temperature;
 
 				printf("SRV: CURRENT AVERAGE NUMBER: %.2f\n", new_integrated_temp);
-
-				msg_send.temperature = new_integrated_temp;
+				msg_send.temperature = monitorTemp;
 			}
-
-			sprintf(your_msqid, "/%s_%d", NODE_NAME_PREFIX, msg_rcvd.nodeId);
-			if (mq_open( your_msqid, O_WRONLY) < 0)
-				oops("SRV: Error opening a client's queue.", errno);
+			
+			msg_send.nodeId = msg_rcvd.nodeId;
 
 			if (mq_send(your_msqid, (const char*) &msg_send, sizeof(msg_send), (unsigned int) TYPE) < 0)
 				oops("SRV: Cannot respond to a client.", errno);
