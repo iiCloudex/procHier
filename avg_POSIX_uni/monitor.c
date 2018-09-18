@@ -22,7 +22,6 @@ int main(int argc, char *argv[])
 
 	float monitorTemp = strtol(argv[1], NULL, 10);
 	float sumOfClients = 0;
-	float new_integrated_temp = 0;
 
 	// initialize the queue attributes
 	struct mq_attr attr;
@@ -69,36 +68,46 @@ int main(int argc, char *argv[])
 	while (isStable != 4)
 	{
 		//If we recieved a message successfully
-		if (mq_receive(my_msqid, (char*) &msg_rcvd, MAX_MSG_SIZE, &type) >= 0)
+		if ( mq_receive(my_msqid, (char*) &msg_rcvd, MAX_MSG_SIZE, &type) >= 0)
 		{
+			char *name = malloc(sizeof(char));
+			sprintf(name, "/%s%d", NODE_NAME_PREFIX, msg_rcvd.nodeId);
+
+			if ( (your_msqid = mq_open(name, O_WRONLY)) < 0)
+			{
+				oops("SRV: Error opening a node's queue inside while.", errno);
+			}
+			else
+			{
+				printf("SVR: Opened node's queue\n");
+			}
+			
+
 			if(nodeData[msg_rcvd.nodeId - 1].previousTemperature == msg_rcvd.temperature)//Old temp == received temp
 			{
-
 				msg_send.stable = true;
 				isStable++;
 			}
 			else
-			{
-				char name[10];
-				sprintf(name, "/%s%d", NODE_NAME_PREFIX, msg_rcvd.nodeId);
-
-				if ( (your_msqid = mq_open(name, O_WRONLY)) < 0)
-					oops("SRV: Error opening a client's queue.", errno);
-			
+			{		
 				printf("SRV: NODE_%d REPORTS: %.2f\n", msg_rcvd.nodeId, msg_rcvd.temperature);
 
 				sumOfClients = sumOfClients - nodeData[msg_rcvd.nodeId - 1].previousTemperature + msg_rcvd.temperature;
 				monitorTemp = (2 * monitorTemp + sumOfClients) / 6;
 				nodeData[msg_rcvd.nodeId - 1].previousTemperature = msg_rcvd.temperature;
 
-				printf("SRV: CURRENT AVERAGE NUMBER: %.2f\n", new_integrated_temp);
+				printf("SRV: CURRENT AVERAGE NUMBER: %.2f\n", monitorTemp);
 				msg_send.temperature = monitorTemp;
 			}
-			
-			msg_send.nodeId = msg_rcvd.nodeId;
 
 			if (mq_send(your_msqid, (const char*) &msg_send, sizeof(msg_send), (unsigned int) TYPE) < 0)
-				oops("SRV: Cannot respond to a client.", errno);
+			{
+				oops("SRV: Cannot respond to a node.", errno);
+			}
+			else
+			{
+				printf("SVR: Message sent to node\n");
+			}
 		}
 		else
 			oops("SRV: Error receiving data.", errno);

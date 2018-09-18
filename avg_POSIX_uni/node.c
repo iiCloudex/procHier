@@ -25,10 +25,16 @@ int main(int argc, char *argv[])
 
 	//Send msg_send to monitor
 	if (mq_send(server_msqid, (char *) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
+	{
 		oops("CLI: Error sending a message to server.", errno);
+	}
+	else
+	{
+		printf("CLI: Sent message to monitor\n");
+	}
 
 	
-	char name[10];
+	char *name = malloc(sizeof(char));
 	sprintf(name, "/%s%d", NODE_NAME_PREFIX, msg_send.nodeId);
 
 	// just in case the old queue is still there (e.g., after ^C)
@@ -45,8 +51,14 @@ int main(int argc, char *argv[])
 
 
 	//Open a queue for the node
-	if ( (my_msqid = mq_open(name, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
+	if ((my_msqid = mq_open(name, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
+	{
 		oops("CLI: Error opening a node queue.", errno);
+	}
+	else
+	{
+		printf("CLI: Opened queue for %s\n", name);
+	}
 	
 	//Continuously read messages
 	while(true)
@@ -70,7 +82,13 @@ int main(int argc, char *argv[])
 			}
 			
 			if (mq_send(server_msqid, (char *) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
-				oops("CLI: Error sending a message to server.", errno);
+			{
+				oops("CLI: Error sending a message to monitor.", errno);
+			}
+			else
+			{
+				printf("CLI: Sent new message to monitor\n");
+			}
 
 		}
 		else
