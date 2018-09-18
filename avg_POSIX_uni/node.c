@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
 	msg_send.stable = false;
 	msg_send.nodeId = atoi(argv[1]);
 	msg_send.temperature = strtol(argv[2], NULL, 10);
+	char *name = malloc(sizeof(char));
+	sprintf(name, "/%s%d", NODE_NAME_PREFIX, msg_send.nodeId);
 
 	//Send msg_send to monitor
 	if (mq_send(server_msqid, (char *) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
@@ -30,16 +32,15 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		printf("CLI: Sent message to monitor\n");
+		printf("%s: Sent message to monitor\n", name);
 	}
 
 	
-	char *name = malloc(sizeof(char));
-	sprintf(name, "/%s%d", NODE_NAME_PREFIX, msg_send.nodeId);
+	
 
 	// just in case the old queue is still there (e.g., after ^C)
 	if (mq_unlink(name) == 0 )
-		printf("CLI: Message queue %s removed from system.\n", name);
+		printf("%s: Message queue %s removed from system.\n", name, name);
 
 	// initialize the queue attributes
 	struct mq_attr attr;
@@ -57,8 +58,9 @@ int main(int argc, char *argv[])
 	}
 	else
 	{
-		printf("CLI: Opened queue for %s\n", name);
+		printf("%s: Opened queue for %s\n", name, name);
 	}
+	
 	
 	//Continuously read messages
 	while(true)
@@ -70,14 +72,18 @@ int main(int argc, char *argv[])
 			if(msg_rcvd.stable)
 			{
 				printf("NODE_%d TERMINATING...", msg_send.nodeId);
-				mq_unlink(my_msqid);
+				mq_unlink(name);
 				exit(EXIT_SUCCESS);
 			}
 			else
 			{
-				printf("CLI: SERVER REPORTS CURRENT AVERAGE NUMBER: %.2f\n", msg_rcvd.temperature);
+				printf("%s: SERVER REPORTS CURRENT AVERAGE NUMBER: %.2f\n", name, msg_rcvd.temperature);
 
+				msg_send.stable = false;
+				msg_send.nodeId = msg_rcvd.nodeId;
 				msg_send.temperature = (msg_send.temperature * 3 + 2 * msg_rcvd.temperature) / 5;
+
+				printf("%s: NEW TEMPERATURE: %f\n", name, msg_send.temperature);
 
 			}
 			
@@ -87,7 +93,7 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				printf("CLI: Sent new message to monitor\n");
+				printf("%s: Sent new message to monitor\n", name);
 			}
 
 		}
@@ -95,7 +101,7 @@ int main(int argc, char *argv[])
 			oops("CLI: Error receiving data.", errno);
 
 	}
-	mq_unlink(my_msqid);
+	mq_unlink(name);
 
 	exit(EXIT_SUCCESS);
 }

@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 
 	// just in case it is still there (if we quit using ^C for example)
 	if (mq_unlink(MONITOR_QUEUE) == 0)
-		printf("SRV: Message queue %s removed.\n", MONITOR_QUEUE);
+		printf("SVR: Message queue %s removed.\n", MONITOR_QUEUE);
 
 	float monitorTemp = strtol(argv[1], NULL, 10);
 	float sumOfClients = 0;
@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
 	attr.mq_flags = 0;
 
 	if ((my_msqid = mq_open(MONITOR_QUEUE, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
-		oops("SRV: Error opening a monitor queue.", errno);
+		oops("SVR: Error opening a monitor queue.", errno);
 
-	printf("SRV: Message queue %s created.\n", MONITOR_QUEUE);
+	printf("SVR: Message queue %s created.\n", MONITOR_QUEUE);
 
 	//Start forking client nodes
 	for(int i = 0; i < numOfNodes; i++)
@@ -75,11 +75,11 @@ int main(int argc, char *argv[])
 
 			if ( (your_msqid = mq_open(name, O_WRONLY)) < 0)
 			{
-				oops("SRV: Error opening a node's queue inside while.", errno);
+				oops("SVR: Error opening a node's queue inside while.", errno);
 			}
 			else
 			{
-				printf("SVR: Opened node's queue\n");
+				printf("SVR: Opened %s queue\n", name);
 			}
 			
 
@@ -90,29 +90,34 @@ int main(int argc, char *argv[])
 			}
 			else
 			{		
-				printf("SRV: NODE_%d REPORTS: %.2f\n", msg_rcvd.nodeId, msg_rcvd.temperature);
+				printf("SVR: %s REPORTS: %.2f\n", name, msg_rcvd.temperature);
 
 				sumOfClients = sumOfClients - nodeData[msg_rcvd.nodeId - 1].previousTemperature + msg_rcvd.temperature;
 				monitorTemp = (2 * monitorTemp + sumOfClients) / 6;
 				nodeData[msg_rcvd.nodeId - 1].previousTemperature = msg_rcvd.temperature;
 
-				printf("SRV: CURRENT AVERAGE NUMBER: %.2f\n", monitorTemp);
+				printf("SVR: CURRENT AVERAGE NUMBER: %.2f\n", monitorTemp);
 				msg_send.temperature = monitorTemp;
+
 			}
 
-			if (mq_send(your_msqid, (const char*) &msg_send, sizeof(msg_send), (unsigned int) TYPE) < 0)
+			if (mq_send(your_msqid, (const char*) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
 			{
-				oops("SRV: Cannot respond to a node.", errno);
+				oops("SVR: Cannot respond to node.", errno);
 			}
 			else
 			{
-				printf("SVR: Message sent to node\n");
+				printf("SVR: Message sent to %s\n", name);
 			}
 		}
 		else
-			oops("SRV: Error receiving data.", errno);
+			oops("SVR: Error receiving data.", errno);
 	}
 
+	if(isStable == 4)
+	{
+		printf("SVR: Monitor is stable...TERMINATING\n");
+	}
 	mq_unlink(MONITOR_QUEUE);
 
 	exit(EXIT_SUCCESS);
