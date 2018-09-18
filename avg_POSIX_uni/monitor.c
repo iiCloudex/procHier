@@ -1,3 +1,9 @@
+/*
+* Name: Marco Antonio Bustamante
+* Lab/Task: Lab 3 Task 2
+* Date: 9/17/18
+*/
+
 #include "avg_POSIX_messg.h"
 
 int main(int argc, char *argv[])
@@ -117,8 +123,8 @@ int main(int argc, char *argv[])
 	if(isStable == 4)
 	{
 		printf("SVR: Monitor is stable...TERMINATING\n");
+		mq_unlink(MONITOR_QUEUE);
+		exit(EXIT_SUCCESS);
 	}
-	mq_unlink(MONITOR_QUEUE);
-
-	exit(EXIT_SUCCESS);
+	
 }

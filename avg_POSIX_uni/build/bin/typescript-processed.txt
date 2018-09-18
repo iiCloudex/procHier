@@ -1,0 +1,69 @@
+Script started on 2018-09-17 23:30:23-0700
+marcoantoniobustamante@iiCloudex:~/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/bin$ monitor 54 4 32 42 61 75
+SVR: Message queue /MONITOR removed.
+SVR: Message queue /MONITOR created.
+SVR: Opened /NODE_3 queue
+SVR: /NODE_3 REPORTS: 61.00
+SVR: CURRENT AVERAGE NUMBER: 28.17
+SVR: Message sent to /NODE_3
+/NODE_4: Sent message to monitor
+SVR: Opened /NODE_4 queue
+SVR: /NODE_4 REPORTS: 75.00
+SVR: CURRENT AVERAGE NUMBER: 32.06
+SVR: Message sent to /NODE_4
+SVR: Opened /NODE_2 queue
+SVR: /NODE_2 REPORTS: 42.00
+SVR: CURRENT AVERAGE NUMBER: 40.35
+SVR: Message sent to /NODE_2
+SVR: Opened /NODE_1 queue
+SVR: /NODE_1 REPORTS: 32.00
+SVR: CURRENT AVERAGE NUMBER: 48.45
+SVR: Message sent to /NODE_1
+/NODE_4: Message queue /NODE_4 removed from system.
+/NODE_4: Opened queue for /NODE_4
+/NODE_2: Sent message to monitor
+/NODE_2: Message queue /NODE_2 removed from system.
+/NODE_2: Opened queue for /NODE_2
+/NODE_1: Sent message to monitor
+/NODE_3: Sent message to monitor
+/NODE_3: Message queue /NODE_3 removed from system.
+/NODE_3: Opened queue for /NODE_3
+/NODE_1: Message queue /NODE_1 removed from system.
+/NODE_1: Opened queue for /NODE_1
+^C
+marcoantoniobustamante@iiCloudex:~/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/bin$ monitor 54 4 32 42 61 75
+SVR: Message queue /MONITOR removed.
+SVR: Message queue /MONITOR created.
+/NODE_4: Sent message to monitor
+SVR: Opened /NODE_4 queue
+SVR: /NODE_4 REPORTS: 75.00
+SVR: CURRENT AVERAGE NUMBER: 30.50
+SVR: Message sent to /NODE_4
+SVR: Opened /NODE_3 queue
+SVR: /NODE_3 REPORTS: 61.00
+SVR: CURRENT AVERAGE NUMBER: 32.83
+SVR: Message sent to /NODE_3
+SVR: Opened /NODE_2 queue
+SVR: /NODE_2 REPORTS: 42.00
+SVR: CURRENT AVERAGE NUMBER: 40.61
+SVR: Message sent to /NODE_2
+SVR: Opened /NODE_1 queue
+SVR: /NODE_1 REPORTS: 32.00
+SVR: CURRENT AVERAGE NUMBER: 48.54
+SVR: Message sent to /NODE_1
+/NODE_3: Sent message to monitor
+/NODE_3: Message queue /NODE_3 removed from system.
+/NODE_3: Opened queue for /NODE_3
+/NODE_2: Sent message to monitor
+/NODE_2: Message queue /NODE_2 removed from system.
+/NODE_2: Opened queue for /NODE_2
+/NODE_1: Sent message to monitor
+/NODE_4: Message queue /NODE_4 removed from system.
+/NODE_4: Opened queue for /NODE_4
+/NODE_1: Message queue /NODE_1 removed from system.
+/NODE_1: Opened queue for /NODE_1
+^C
+marcoantoniobustamante@iiCloudex:~/Desktop/COMP362/MarcoBustamanteLab03/avg_POSIX_uni/build/bin$ exit
+exit
+
+Script done on 2018-09-17 23:30:49-0700

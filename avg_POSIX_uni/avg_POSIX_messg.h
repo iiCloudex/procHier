@@ -1,3 +1,9 @@
+/*
+* Name: Marco Antonio Bustamante
+* Lab/Task: Lab 3 Task 2
+* Date: 9/17/18
+*/
+
 #ifndef _MESSG_H
 #define _MESSG_H
 

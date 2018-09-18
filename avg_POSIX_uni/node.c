@@ -1,3 +1,9 @@
+/*
+* Name: Marco Antonio Bustamante
+* Lab/Task: Lab 3 Task 2
+* Date: 9/17/18
+*/
+
 #include "avg_POSIX_messg.h"
 
 int main(int argc, char *argv[])
@@ -15,7 +21,7 @@ int main(int argc, char *argv[])
 
 	//Try to open monitor queue
 	if ((server_msqid = mq_open(MONITOR_QUEUE, O_WRONLY)) < 0)
-		oops("CLI: Error opening the monitor queue.", errno);
+		oops("CLI: Error opening the monitor queue.\n", errno);
 
 
 	//Initialize msg_send variables
@@ -28,7 +34,7 @@ int main(int argc, char *argv[])
 	//Send msg_send to monitor
 	if (mq_send(server_msqid, (char *) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
 	{
-		oops("CLI: Error sending a message to server.", errno);
+		oops("CLI: Error sending a message to server.\n", errno);
 	}
 	else
 	{
@@ -54,7 +60,7 @@ int main(int argc, char *argv[])
 	//Open a queue for the node
 	if ((my_msqid = mq_open(name, O_RDWR | O_CREAT, S_IWUSR | S_IRUSR, &attr)) < 0)
 	{
-		oops("CLI: Error opening a node queue.", errno);
+		oops("CLI: Error opening a node queue.\n", errno);
 	}
 	else
 	{
@@ -71,7 +77,7 @@ int main(int argc, char *argv[])
 
 			if(msg_rcvd.stable)
 			{
-				printf("NODE_%d TERMINATING...", msg_send.nodeId);
+				printf("NODE_%d TERMINATING...\n", msg_send.nodeId);
 				mq_unlink(name);
 				exit(EXIT_SUCCESS);
 			}
@@ -89,7 +95,7 @@ int main(int argc, char *argv[])
 			
 			if (mq_send(server_msqid, (char *) &msg_send, sizeof(MESSG), (unsigned int) TYPE) < 0)
 			{
-				oops("CLI: Error sending a message to monitor.", errno);
+				oops("CLI: Error sending a message to monitor.\n", errno);
 			}
 			else
 			{
@@ -98,7 +104,7 @@ int main(int argc, char *argv[])
 
 		}
 		else
-			oops("CLI: Error receiving data.", errno);
+			oops("CLI: Error receiving data.\n", errno);
 
 	}
 	mq_unlink(name);
